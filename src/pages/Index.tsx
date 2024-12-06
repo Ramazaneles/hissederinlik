@@ -2,6 +2,8 @@ import { useState } from "react";
 import { StockSearch } from "@/components/StockSearch";
 import { StockDepthTable } from "@/components/StockDepthTable";
 import { StockGrid } from "@/components/StockGrid";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -34,43 +36,47 @@ const Index = () => {
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen p-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
-          {selectedStock ? (
-            <button 
-              className="text-muted hover:text-foreground"
-              onClick={() => setSelectedStock(null)}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-            </button>
-          ) : (
-            <div className="w-6" />
-          )}
-          <div className="flex-1 mx-4">
-            <StockSearch />
-          </div>
-          {selectedStock && (
-            <div className="flex gap-2">
-              <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30">
-                AL
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <div className="flex-1">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
+            {selectedStock ? (
+              <button 
+                className="text-muted hover:text-foreground"
+                onClick={() => setSelectedStock(null)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
               </button>
-              <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30">
-                SAT
-              </button>
+            ) : (
+              <div className="w-6" />
+            )}
+            <div className="flex-1 mx-4">
+              <StockSearch />
             </div>
+            {selectedStock && (
+              <div className="flex gap-2">
+                <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30">
+                  AL
+                </button>
+                <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30">
+                  SAT
+                </button>
+              </div>
+            )}
+          </div>
+
+          {selectedStock ? (
+            <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
+          ) : (
+            <StockGrid onStockSelect={setSelectedStock} />
           )}
         </div>
-
-        {selectedStock ? (
-          <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
-        ) : (
-          <StockGrid onStockSelect={setSelectedStock} />
-        )}
       </div>
+      <Footer />
     </div>
   );
 };

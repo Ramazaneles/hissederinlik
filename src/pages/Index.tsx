@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { StockSearch } from "@/components/StockSearch";
 import { StockDepthTable } from "@/components/StockDepthTable";
+import { StockGrid } from "@/components/StockGrid";
 
 // Mock data to match the image example
 const mockBuyOrders = [
@@ -29,30 +31,45 @@ const mockSellOrders = [
 ];
 
 const Index = () => {
+  const [showDepth, setShowDepth] = useState(false);
+
   return (
     <div className="min-h-screen p-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
-          <button className="text-muted hover:text-foreground">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                 stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-          </button>
+          {showDepth ? (
+            <button 
+              className="text-muted hover:text-foreground"
+              onClick={() => setShowDepth(false)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                   stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+            </button>
+          ) : (
+            <div className="w-6" />
+          )}
           <div className="flex-1 mx-4">
             <StockSearch />
           </div>
-          <div className="flex gap-2">
-            <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30">
-              AL
-            </button>
-            <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30">
-              SAT
-            </button>
-          </div>
+          {showDepth && (
+            <div className="flex gap-2">
+              <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30">
+                AL
+              </button>
+              <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30">
+                SAT
+              </button>
+            </div>
+          )}
         </div>
 
-        <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
+        {showDepth ? (
+          <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
+        ) : (
+          <StockGrid />
+        )}
       </div>
     </div>
   );

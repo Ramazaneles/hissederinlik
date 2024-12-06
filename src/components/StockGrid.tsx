@@ -14,12 +14,20 @@ const mockStocks = [
   { symbol: "TUPRS", name: "Tüpraş", price: 187.45, change: 4.23 },
 ];
 
-export const StockGrid = () => {
+interface StockGridProps {
+  onStockSelect: (symbol: string) => void;
+}
+
+export const StockGrid = ({ onStockSelect }: StockGridProps) => {
   return (
     <ScrollArea className="h-[calc(100vh-16rem)]">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         {mockStocks.map((stock) => (
-          <StockCard key={stock.symbol} {...stock} />
+          <StockCard 
+            key={stock.symbol} 
+            {...stock} 
+            onClick={() => onStockSelect(stock.symbol)}
+          />
         ))}
       </div>
     </ScrollArea>

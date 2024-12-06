@@ -12,8 +12,14 @@ interface StockDepthTableProps {
 }
 
 export const StockDepthTable = ({ buyOrders, sellOrders }: StockDepthTableProps) => {
+  // Calculate totals
+  const totalBuyLot = buyOrders.reduce((sum, order) => sum + order.lot, 0);
+  const totalSellLot = sellOrders.reduce((sum, order) => sum + order.lot, 0);
+  const averageBuyPrice = buyOrders.reduce((sum, order) => sum + order.price, 0) / buyOrders.length;
+  const averageSellPrice = sellOrders.reduce((sum, order) => sum + order.price, 0) / sellOrders.length;
+
   return (
-    <div className="bg-background rounded-lg p-4">
+    <div className="bg-background rounded-lg p-4 animate-fade-in">
       <Table>
         <TableHeader>
           <TableRow>
@@ -30,15 +36,29 @@ export const StockDepthTable = ({ buyOrders, sellOrders }: StockDepthTableProps)
             const sell = sellOrders[index];
             return (
               <TableRow key={index}>
-                <TableCell className="text-success">{buy.orderCount}</TableCell>
-                <TableCell className="text-success">{buy.lot.toLocaleString()}</TableCell>
-                <TableCell className="text-success">{buy.price.toFixed(2)}</TableCell>
-                <TableCell className="text-danger">{sell.price.toFixed(2)}</TableCell>
-                <TableCell className="text-danger">{sell.lot.toLocaleString()}</TableCell>
-                <TableCell className="text-danger">{sell.orderCount}</TableCell>
+                <TableCell className="text-success font-mono">{buy.orderCount}</TableCell>
+                <TableCell className="text-success font-mono">{buy.lot.toLocaleString()}</TableCell>
+                <TableCell className="text-success font-mono">{buy.price.toFixed(2)}</TableCell>
+                <TableCell className="text-danger font-mono">{sell.price.toFixed(2)}</TableCell>
+                <TableCell className="text-danger font-mono">{sell.lot.toLocaleString()}</TableCell>
+                <TableCell className="text-danger font-mono">{sell.orderCount}</TableCell>
               </TableRow>
             );
           })}
+          <TableRow className="bg-card/50">
+            <TableCell colSpan={2} className="text-muted font-mono">
+              Toplam: {totalBuyLot.toLocaleString()}
+            </TableCell>
+            <TableCell className="text-muted font-mono">
+              Ort: {averageBuyPrice.toFixed(2)}
+            </TableCell>
+            <TableCell className="text-muted font-mono">
+              Ort: {averageSellPrice.toFixed(2)}
+            </TableCell>
+            <TableCell colSpan={2} className="text-muted font-mono text-right">
+              Toplam: {totalSellLot.toLocaleString()}
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </div>

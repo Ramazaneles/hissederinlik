@@ -3,7 +3,7 @@ import { StockSearch } from "@/components/StockSearch";
 import { StockDepthTable } from "@/components/StockDepthTable";
 import { StockGrid } from "@/components/StockGrid";
 
-// Mock data to match the image example
+// Mock depth data
 const mockBuyOrders = [
   { orderCount: 9, lot: 17951, price: 19.54 },
   { orderCount: 22, lot: 12556, price: 19.53 },
@@ -31,16 +31,16 @@ const mockSellOrders = [
 ];
 
 const Index = () => {
-  const [showDepth, setShowDepth] = useState(false);
+  const [selectedStock, setSelectedStock] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
-          {showDepth ? (
+          {selectedStock ? (
             <button 
               className="text-muted hover:text-foreground"
-              onClick={() => setShowDepth(false)}
+              onClick={() => setSelectedStock(null)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -53,7 +53,7 @@ const Index = () => {
           <div className="flex-1 mx-4">
             <StockSearch />
           </div>
-          {showDepth && (
+          {selectedStock && (
             <div className="flex gap-2">
               <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30">
                 AL
@@ -65,10 +65,10 @@ const Index = () => {
           )}
         </div>
 
-        {showDepth ? (
+        {selectedStock ? (
           <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
         ) : (
-          <StockGrid />
+          <StockGrid onStockSelect={setSelectedStock} />
         )}
       </div>
     </div>

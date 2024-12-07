@@ -43,7 +43,7 @@ const Index = () => {
           <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
             {selectedStock ? (
               <button 
-                className="text-muted hover:text-foreground"
+                className="text-muted hover:text-foreground transition-colors"
                 onClick={() => setSelectedStock(null)}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
@@ -59,10 +59,10 @@ const Index = () => {
             </div>
             {selectedStock && (
               <div className="flex gap-2">
-                <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30">
+                <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30 transition-colors">
                   AL
                 </button>
-                <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30">
+                <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30 transition-colors">
                   SAT
                 </button>
               </div>
@@ -70,7 +70,27 @@ const Index = () => {
           </div>
 
           {selectedStock ? (
-            <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
+            <div className="space-y-4">
+              <div className="card">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h2 className="text-2xl font-bold">{selectedStock}</h2>
+                    <p className="text-muted">Vakıf REIT</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold">19.54 ₺</p>
+                    <p className="text-success flex items-center justify-end">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
+                      </svg>
+                      2.45%
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
+            </div>
           ) : (
             <StockGrid onStockSelect={setSelectedStock} />
           )}

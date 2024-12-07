@@ -131,6 +131,7 @@ export const StockDepthTable = ({ buyOrders, sellOrders }: StockDepthTableProps)
 
       {/* Detailed Orders Table */}
       <div className="bg-card rounded-lg p-4">
+        <h3 className="text-lg font-semibold mb-4">Detaylı İşlemler</h3>
         <Table>
           <TableHeader>
             <TableRow>
@@ -142,11 +143,11 @@ export const StockDepthTable = ({ buyOrders, sellOrders }: StockDepthTableProps)
           </TableHeader>
           <TableBody>
             {mockDetailedOrders.map((order, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-mono">{order.price.toFixed(2)}</TableCell>
+              <TableRow key={index} className="hover:bg-card/50">
+                <TableCell className="font-mono text-success">{order.price.toFixed(2)}</TableCell>
                 <TableCell className="font-mono">{order.lot.toLocaleString()}</TableCell>
-                <TableCell>{order.buyer}</TableCell>
-                <TableCell>{order.seller}</TableCell>
+                <TableCell className="text-success">{order.buyer}</TableCell>
+                <TableCell className="text-danger">{order.seller}</TableCell>
               </TableRow>
             ))}
           </TableBody>

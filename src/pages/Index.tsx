@@ -138,6 +138,23 @@ const Index = () => {
                     <p className="font-mono">{stockDetails.lastUpdated}</p>
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="p-3 bg-card/50 rounded-lg">
+                    <div className="flex items-center gap-2 text-muted mb-1">
+                      <TrendingUp className="h-4 w-4" />
+                      <span className="text-sm">52 Haftalık Aralık</span>
+                    </div>
+                    <p className="font-mono">{stockDetails.yearRange}</p>
+                  </div>
+                  <div className="p-3 bg-card/50 rounded-lg">
+                    <div className="flex items-center gap-2 text-muted mb-1">
+                      <BarChart3 className="h-4 w-4" />
+                      <span className="text-sm">Ortalama Hacim (30G)</span>
+                    </div>
+                    <p className="font-mono">{stockDetails.avgVolume.toLocaleString()}</p>
+                  </div>
+                </div>
               </div>
               <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
             </div>

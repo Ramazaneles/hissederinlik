@@ -4,6 +4,7 @@ import { StockDepthTable } from "@/components/StockDepthTable";
 import { StockGrid } from "@/components/StockGrid";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ArrowUp, ArrowDown, TrendingUp, BarChart3, DollarSign, Clock } from "lucide-react";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -35,6 +36,23 @@ const mockSellOrders = [
 const Index = () => {
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
 
+  // Mock stock details data - in real app this would come from an API
+  const getStockDetails = (symbol: string) => ({
+    name: symbol === "VRGYO" ? "Vakıf REIT" : 
+          symbol === "GARAN" ? "Garanti Bank" :
+          symbol === "THYAO" ? "Turkish Airlines" : "Unknown Company",
+    price: 19.54,
+    change: 2.45,
+    volume: 1234567,
+    marketCap: "5.2B",
+    dayRange: "19.12 - 19.86",
+    yearRange: "15.30 - 22.45",
+    avgVolume: 987654,
+    lastUpdated: "14:23:45"
+  });
+
+  const stockDetails = selectedStock ? getStockDetails(selectedStock) : null;
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -55,7 +73,7 @@ const Index = () => {
               <div className="w-6" />
             )}
             <div className="flex-1 mx-4">
-              <StockSearch />
+              <StockSearch defaultValue={selectedStock || ""} />
             </div>
             {selectedStock && (
               <div className="flex gap-2">
@@ -69,23 +87,55 @@ const Index = () => {
             )}
           </div>
 
-          {selectedStock ? (
+          {selectedStock && stockDetails ? (
             <div className="space-y-4">
               <div className="card">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mb-4">
                   <div>
                     <h2 className="text-2xl font-bold">{selectedStock}</h2>
-                    <p className="text-muted">Vakıf REIT</p>
+                    <p className="text-muted">{stockDetails.name}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold">19.54 ₺</p>
-                    <p className="text-success flex items-center justify-end">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 19V5M5 12l7-7 7 7"/>
-                      </svg>
-                      2.45%
+                    <p className="text-2xl font-bold">{stockDetails.price.toFixed(2)} ₺</p>
+                    <p className={`flex items-center justify-end ${stockDetails.change >= 0 ? 'text-success' : 'text-danger'}`}>
+                      {stockDetails.change >= 0 ? (
+                        <ArrowUp className="h-4 w-4 mr-1" />
+                      ) : (
+                        <ArrowDown className="h-4 w-4 mr-1" />
+                      )}
+                      {Math.abs(stockDetails.change)}%
                     </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-3 bg-card/50 rounded-lg">
+                    <div className="flex items-center gap-2 text-muted mb-1">
+                      <BarChart3 className="h-4 w-4" />
+                      <span className="text-sm">Hacim</span>
+                    </div>
+                    <p className="font-mono">{stockDetails.volume.toLocaleString()}</p>
+                  </div>
+                  <div className="p-3 bg-card/50 rounded-lg">
+                    <div className="flex items-center gap-2 text-muted mb-1">
+                      <DollarSign className="h-4 w-4" />
+                      <span className="text-sm">Piyasa Değeri</span>
+                    </div>
+                    <p className="font-mono">{stockDetails.marketCap} ₺</p>
+                  </div>
+                  <div className="p-3 bg-card/50 rounded-lg">
+                    <div className="flex items-center gap-2 text-muted mb-1">
+                      <TrendingUp className="h-4 w-4" />
+                      <span className="text-sm">Günlük Aralık</span>
+                    </div>
+                    <p className="font-mono">{stockDetails.dayRange}</p>
+                  </div>
+                  <div className="p-3 bg-card/50 rounded-lg">
+                    <div className="flex items-center gap-2 text-muted mb-1">
+                      <Clock className="h-4 w-4" />
+                      <span className="text-sm">Son Güncelleme</span>
+                    </div>
+                    <p className="font-mono">{stockDetails.lastUpdated}</p>
                   </div>
                 </div>
               </div>

@@ -1,8 +1,16 @@
 import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export const StockSearch = () => {
-  const [searchTerm, setSearchTerm] = useState('VRGYO');
+interface StockSearchProps {
+  defaultValue?: string;
+}
+
+export const StockSearch = ({ defaultValue = 'VRGYO' }: StockSearchProps) => {
+  const [searchTerm, setSearchTerm] = useState(defaultValue);
+
+  useEffect(() => {
+    setSearchTerm(defaultValue);
+  }, [defaultValue]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value.toUpperCase());

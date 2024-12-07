@@ -7,10 +7,31 @@ interface DepthData {
   price: number;
 }
 
+interface DetailedOrder {
+  price: number;
+  lot: number;
+  buyer: string;
+  seller: string;
+}
+
 interface StockDepthTableProps {
   buyOrders: DepthData[];
   sellOrders: DepthData[];
 }
+
+// Mock detailed orders data (in real app, this would come from props)
+const mockDetailedOrders: DetailedOrder[] = [
+  { price: 8.98, lot: 55, buyer: "Vakif", seller: "Isik" },
+  { price: 8.98, lot: 53415, buyer: "Vakif", seller: "Oyak" },
+  { price: 8.98, lot: 7646, buyer: "Vakif", seller: "Gedik" },
+  { price: 8.98, lot: 75, buyer: "Info", seller: "Gedik" },
+  { price: 8.98, lot: 2279, buyer: "Deniz", seller: "Gedik" },
+  { price: 8.98, lot: 5000, buyer: "Deniz", seller: "Meksa" },
+  { price: 8.98, lot: 1, buyer: "Deniz", seller: "Oyak" },
+  { price: 8.98, lot: 1, buyer: "Deniz", seller: "Ak Yatirim" },
+  { price: 8.98, lot: 25, buyer: "Deniz", seller: "Oyak" },
+  { price: 8.98, lot: 20, buyer: "Deniz", seller: "Gedik" },
+];
 
 export const StockDepthTable = ({ buyOrders, sellOrders }: StockDepthTableProps) => {
   // Calculate totals and statistics
@@ -104,6 +125,30 @@ export const StockDepthTable = ({ buyOrders, sellOrders }: StockDepthTableProps)
                 Toplam: {totalSellLot.toLocaleString()}
               </TableCell>
             </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Detailed Orders Table */}
+      <div className="bg-card rounded-lg p-4">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-muted">Fiyat</TableHead>
+              <TableHead className="text-muted">Lot</TableHead>
+              <TableHead className="text-muted">Alan</TableHead>
+              <TableHead className="text-muted">Satan</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {mockDetailedOrders.map((order, index) => (
+              <TableRow key={index}>
+                <TableCell className="font-mono">{order.price.toFixed(2)}</TableCell>
+                <TableCell className="font-mono">{order.lot.toLocaleString()}</TableCell>
+                <TableCell>{order.buyer}</TableCell>
+                <TableCell>{order.seller}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>

@@ -48,9 +48,7 @@ export const StockGrid = ({ onStockSelect }: StockGridProps) => {
     )
     .sort((a, b) => {
       const multiplier = sortDirection === "asc" ? 1 : -1;
-      const aValue = a[sortField];
-      const bValue = b[sortField];
-      return (aValue - bValue) * multiplier;
+      return (Number(a[sortField]) - Number(b[sortField])) * multiplier;
     });
 
   return (
@@ -106,7 +104,7 @@ export const StockGrid = ({ onStockSelect }: StockGridProps) => {
         </div>
       </div>
 
-      <ScrollArea className="h-[calc(100vh-16rem)]">
+      <ScrollArea>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
           {sortedStocks.map((stock) => (
             <StockCard 

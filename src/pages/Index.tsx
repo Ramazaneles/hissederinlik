@@ -4,7 +4,10 @@ import { StockDepthTable } from "@/components/StockDepthTable";
 import { StockGrid } from "@/components/StockGrid";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { ArrowUp, ArrowDown, TrendingUp, BarChart3, DollarSign, Clock, TrendingDown, Activity } from "lucide-react";
+import { MarketSummary } from "@/components/market/MarketSummary";
+import { StockMetrics } from "@/components/stock/StockMetrics";
+import { StockHeader } from "@/components/stock/StockHeader";
+import { StockActions } from "@/components/stock/StockActions";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -62,43 +65,7 @@ const Index = () => {
       <Header />
       <div className="flex-1">
         <div className="max-w-6xl mx-auto px-4">
-          {!selectedStock && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Piyasa Özeti</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-card p-4 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-muted">BIST 100</span>
-                    <span className="text-success flex items-center">
-                      <ArrowUp className="h-4 w-4 mr-1" />
-                      1.24%
-                    </span>
-                  </div>
-                  <p className="text-xl font-bold">8,245.67</p>
-                </div>
-                <div className="bg-card p-4 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-muted">USD/TRY</span>
-                    <span className="text-danger flex items-center">
-                      <ArrowDown className="h-4 w-4 mr-1" />
-                      0.45%
-                    </span>
-                  </div>
-                  <p className="text-xl font-bold">31.24</p>
-                </div>
-                <div className="bg-card p-4 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-muted">Bitcoin</span>
-                    <span className="text-success flex items-center">
-                      <ArrowUp className="h-4 w-4 mr-1" />
-                      2.15%
-                    </span>
-                  </div>
-                  <p className="text-xl font-bold">$52,345</p>
-                </div>
-              </div>
-            </div>
-          )}
+          {!selectedStock && <MarketSummary />}
 
           <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
             {selectedStock ? (
@@ -117,100 +84,19 @@ const Index = () => {
             <div className="flex-1 mx-4">
               <StockSearch defaultValue={selectedStock || ""} />
             </div>
-            {selectedStock && (
-              <div className="flex gap-2">
-                <button className="px-4 py-2 rounded-md bg-success/20 text-success hover:bg-success/30 transition-colors">
-                  AL
-                </button>
-                <button className="px-4 py-2 rounded-md bg-danger/20 text-danger hover:bg-danger/30 transition-colors">
-                  SAT
-                </button>
-              </div>
-            )}
+            {selectedStock && <StockActions />}
           </div>
 
           {selectedStock && stockDetails ? (
             <div className="space-y-4">
               <div className="card">
-                <div className="flex justify-between items-center mb-6">
-                  <div>
-                    <h2 className="text-3xl font-bold">{selectedStock}</h2>
-                    <p className="text-muted text-lg">{stockDetails.name}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-3xl font-bold">{stockDetails.price.toFixed(2)} ₺</p>
-                    <p className={`flex items-center justify-end text-lg ${stockDetails.change >= 0 ? 'text-success' : 'text-danger'}`}>
-                      {stockDetails.change >= 0 ? (
-                        <ArrowUp className="h-5 w-5 mr-1" />
-                      ) : (
-                        <ArrowDown className="h-5 w-5 mr-1" />
-                      )}
-                      {Math.abs(stockDetails.change)}%
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <BarChart3 className="h-4 w-4" />
-                      <span>Hacim</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.volume.toLocaleString()}</p>
-                  </div>
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <DollarSign className="h-4 w-4" />
-                      <span>Piyasa Değeri</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.marketCap} ₺</p>
-                  </div>
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <TrendingUp className="h-4 w-4" />
-                      <span>Günlük Aralık</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.dayRange}</p>
-                  </div>
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <Clock className="h-4 w-4" />
-                      <span>Son Güncelleme</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.lastUpdated}</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <TrendingUp className="h-4 w-4" />
-                      <span>52 Haftalık</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.yearRange}</p>
-                  </div>
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <Activity className="h-4 w-4" />
-                      <span>F/K</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.pe}</p>
-                  </div>
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <DollarSign className="h-4 w-4" />
-                      <span>Hisse Başı Kazanç</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.eps}</p>
-                  </div>
-                  <div className="p-4 bg-card/50 rounded-lg">
-                    <div className="flex items-center gap-2 text-muted mb-2">
-                      <TrendingDown className="h-4 w-4" />
-                      <span>Beta</span>
-                    </div>
-                    <p className="text-lg font-mono">{stockDetails.beta}</p>
-                  </div>
-                </div>
+                <StockHeader 
+                  symbol={selectedStock}
+                  name={stockDetails.name}
+                  price={stockDetails.price}
+                  change={stockDetails.change}
+                />
+                <StockMetrics details={stockDetails} />
               </div>
               <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
             </div>

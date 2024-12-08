@@ -1,0 +1,16 @@
+{
+  "name": "Borsa Analiz",
+  "short_name": "Borsa",
+  "description": "Borsa İstanbul hisse senetleri için canlı fiyat ve analiz platformu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { StockSearch } from "@/components/StockSearch";
 import { StockDepthTable } from "@/components/StockDepthTable";
 import { StockGrid } from "@/components/StockGrid";
@@ -37,7 +38,17 @@ const mockSellOrders = [
 ];
 
 const Index = () => {
+  const { stock } = useParams();
+  const navigate = useNavigate();
   const [selectedStock, setSelectedStock] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (stock) {
+      setSelectedStock(stock.toUpperCase());
+    } else {
+      setSelectedStock(null);
+    }
+  }, [stock]);
 
   // Mock stock details data - in real app this would come from an API
   const getStockDetails = (symbol: string) => ({
@@ -58,6 +69,14 @@ const Index = () => {
     beta: 1.24
   });
 
+  const handleStockSelect = (symbol: string) => {
+    navigate(`/${symbol.toLowerCase()}`);
+  };
+
+  const handleBackClick = () => {
+    navigate('/');
+  };
+
   const stockDetails = selectedStock ? getStockDetails(selectedStock) : null;
 
   return (
@@ -71,7 +90,7 @@ const Index = () => {
             {selectedStock ? (
               <button 
                 className="text-muted hover:text-foreground transition-colors"
-                onClick={() => setSelectedStock(null)}
+                onClick={handleBackClick}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
                      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -101,7 +120,7 @@ const Index = () => {
               <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
             </div>
           ) : (
-            <StockGrid onStockSelect={setSelectedStock} />
+            <StockGrid onStockSelect={handleStockSelect} />
           )}
         </div>
       </div>

@@ -93,17 +93,17 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Helmet>
         {selectedStock && stockDetails ? (
-          <>
+          <div>
             <title>{getStockTitle(selectedStock, stockDetails)}</title>
             <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
             <meta name="keywords" content={`${selectedStock}, ${stockDetails.name}, borsa, hisse, BIST, borsa analiz, ${selectedStock} analiz`} />
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <title>Borsa İstanbul Hisse Senetleri | Canlı Borsa Takibi</title>
             <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri, canlı fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri." />
             <meta name="keywords" content="borsa istanbul, bist, hisse senetleri, borsa, thyao, garan, bist 100, canlı borsa" />
-          </>
+          </div>
         )}
       </Helmet>
 

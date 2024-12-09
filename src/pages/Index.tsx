@@ -51,7 +51,6 @@ const Index = () => {
     }
   }, [stock]);
 
-  // Mock stock details data - in real app this would come from an API
   const getStockDetails = (symbol: string) => ({
     name: symbol === "VRGYO" ? "Vakıf REIT" : 
           symbol === "GARAN" ? "Garanti Bank" :
@@ -80,29 +79,26 @@ const Index = () => {
 
   const stockDetails = selectedStock ? getStockDetails(selectedStock) : null;
 
-  const getStockTitle = (symbol: string, details: any) => {
-    const changeText = details.change >= 0 ? "Yükselişte" : "Düşüşte";
-    const changeAmount = Math.abs(details.change).toFixed(2);
-    const priceFormatted = details.price.toFixed(2);
-    
-    return `${symbol} ${details.name} Hisse Analizi | ${priceFormatted}₺ | %${changeAmount} ${changeText} | BIST`;
+  const getStockTitle = (symbol: string) => {
+    return `${symbol} Hisse Lot Sayısı ve Hisse Derinlik Kademeleri`;
   };
 
   const getStockDescription = (symbol: string, details: any) => {
-    const changeText = details.change >= 0 ? "yükseliş" : "düşüş";
-    const volumeFormatted = details.volume.toLocaleString();
-    return `${symbol} (${details.name}) hisse senedi anlık fiyat: ${details.price}₺, günlük ${changeText}: %${Math.abs(details.change).toFixed(2)}, işlem hacmi: ${volumeFormatted}. Canlı borsa verileri, teknik analiz ve detaylı bilgiler.`;
+    const currentDate = new Date().toLocaleDateString('tr-TR');
+    const priceFormatted = details.price.toFixed(2);
+    const changeText = details.change >= 0 ? "değer kazancı" : "değer kaybı";
+    return `${symbol} hissesi ${currentDate} tarihinde günü ${priceFormatted} TL'den ve %${Math.abs(details.change).toFixed(2)} ${changeText} ile tamamladı. İşte ${symbol} hisse lot sayısı ve derinlik kademeleri`;
   };
 
   const getStockKeywords = (symbol: string, details: any) => {
-    return `${symbol}, ${details.name}, ${symbol} hisse, borsa istanbul, bist, ${symbol} analiz, ${symbol} teknik analiz, ${symbol} hisse analizi, borsa, hisse senedi`;
+    return `${symbol}, ${symbol} hisse, ${symbol} lot, ${symbol} kademe, borsa istanbul, ${symbol} analiz, ${symbol} derinlik, ${symbol} alış satış, bist hisse, ${details.name}`;
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {selectedStock && stockDetails ? (
         <Helmet>
-          <title>{getStockTitle(selectedStock, stockDetails)}</title>
+          <title>{getStockTitle(selectedStock)}</title>
           <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
           <meta name="keywords" content={getStockKeywords(selectedStock, stockDetails)} />
         </Helmet>

@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { StockSearch } from "@/components/StockSearch";
-import { StockDepthTable } from "@/components/StockDepthTable";
 import { StockGrid } from "@/components/StockGrid";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { MarketSummary } from "@/components/market/MarketSummary";
-import { StockMetrics } from "@/components/stock/StockMetrics";
-import { StockHeader } from "@/components/stock/StockHeader";
+import { StockDetails } from "@/components/stock/StockDetails";
+import { StockPageSEO } from "@/components/seo/StockPageSEO";
 import { StockActions } from "@/components/stock/StockActions";
-import { Helmet } from "react-helmet";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -79,37 +77,9 @@ const Index = () => {
 
   const stockDetails = selectedStock ? getStockDetails(selectedStock) : null;
 
-  const getStockTitle = (symbol: string) => {
-    return `${symbol} Hisse Lot Sayısı ve Hisse Derinlik Kademeleri`;
-  };
-
-  const getStockDescription = (symbol: string, details: any) => {
-    const currentDate = new Date().toLocaleDateString('tr-TR');
-    const priceFormatted = details.price.toFixed(2);
-    const changeText = details.change >= 0 ? "değer kazancı" : "değer kaybı";
-    return `${symbol} hissesi ${currentDate} tarihinde günü ${priceFormatted} TL'den ve %${Math.abs(details.change).toFixed(2)} ${changeText} ile tamamladı. İşte ${symbol} hisse lot sayısı ve derinlik kademeleri`;
-  };
-
-  const getStockKeywords = (symbol: string, details: any) => {
-    return `${symbol}, ${symbol} hisse, ${symbol} lot, ${symbol} kademe, borsa istanbul, ${symbol} analiz, ${symbol} derinlik, ${symbol} alış satış, bist hisse, ${details.name}`;
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {selectedStock && stockDetails ? (
-        <Helmet>
-          <title>{getStockTitle(selectedStock)}</title>
-          <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
-          <meta name="keywords" content={getStockKeywords(selectedStock, stockDetails)} />
-        </Helmet>
-      ) : (
-        <Helmet>
-          <title>Borsa İstanbul (BIST) Hisse Senetleri | Canlı Borsa Takibi ve Analiz</title>
-          <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri canlı takip, anlık fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri ve teknik analizler." />
-          <meta name="keywords" content="borsa istanbul, bist, bist 100, hisse senetleri, borsa, canlı borsa, borsa analiz, hisse analiz, thyao, garan, bist analiz" />
-        </Helmet>
-      )}
-
+      <StockPageSEO symbol={selectedStock || ""} details={stockDetails} />
       <Header />
       <div className="flex-1">
         <div className="max-w-6xl mx-auto px-4">
@@ -136,19 +106,12 @@ const Index = () => {
           </div>
 
           {selectedStock && stockDetails ? (
-            <div className="space-y-4">
-              <h1 className="text-2xl font-bold mb-4">{selectedStock} Hisse Lot Sayısı ve Hisse Derinlik</h1>
-              <div className="card">
-                <StockHeader 
-                  symbol={selectedStock}
-                  name={stockDetails.name}
-                  price={stockDetails.price}
-                  change={stockDetails.change}
-                />
-                <StockMetrics details={stockDetails} />
-              </div>
-              <StockDepthTable buyOrders={mockBuyOrders} sellOrders={mockSellOrders} />
-            </div>
+            <StockDetails 
+              symbol={selectedStock}
+              details={stockDetails}
+              buyOrders={mockBuyOrders}
+              sellOrders={mockSellOrders}
+            />
           ) : (
             <StockGrid onStockSelect={handleStockSelect} />
           )}

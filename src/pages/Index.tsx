@@ -137,6 +137,7 @@ const Index = () => {
 
           {selectedStock && stockDetails ? (
             <div className="space-y-4">
+              <h1 className="text-2xl font-bold mb-4">{selectedStock} Hisse Lot Sayısı ve Hisse Derinlik</h1>
               <div className="card">
                 <StockHeader 
                   symbol={selectedStock}

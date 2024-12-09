@@ -100,21 +100,19 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Helmet>
-        {selectedStock && stockDetails ? (
-          <>
-            <title>{getStockTitle(selectedStock, stockDetails)}</title>
-            <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
-            <meta name="keywords" content={getStockKeywords(selectedStock, stockDetails)} />
-          </>
-        ) : (
-          <>
-            <title>Borsa İstanbul (BIST) Hisse Senetleri | Canlı Borsa Takibi ve Analiz</title>
-            <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri canlı takip, anlık fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri ve teknik analizler." />
-            <meta name="keywords" content="borsa istanbul, bist, bist 100, hisse senetleri, borsa, canlı borsa, borsa analiz, hisse analiz, thyao, garan, bist analiz" />
-          </>
-        )}
-      </Helmet>
+      {selectedStock && stockDetails ? (
+        <Helmet>
+          <title>{getStockTitle(selectedStock, stockDetails)}</title>
+          <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
+          <meta name="keywords" content={getStockKeywords(selectedStock, stockDetails)} />
+        </Helmet>
+      ) : (
+        <Helmet>
+          <title>Borsa İstanbul (BIST) Hisse Senetleri | Canlı Borsa Takibi ve Analiz</title>
+          <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri canlı takip, anlık fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri ve teknik analizler." />
+          <meta name="keywords" content="borsa istanbul, bist, bist 100, hisse senetleri, borsa, canlı borsa, borsa analiz, hisse analiz, thyao, garan, bist analiz" />
+        </Helmet>
+      )}
 
       <Header />
       <div className="flex-1">

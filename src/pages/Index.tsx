@@ -9,6 +9,7 @@ import { MarketSummary } from "@/components/market/MarketSummary";
 import { StockMetrics } from "@/components/stock/StockMetrics";
 import { StockHeader } from "@/components/stock/StockHeader";
 import { StockActions } from "@/components/stock/StockActions";
+import { Helmet } from "react-helmet";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -79,8 +80,33 @@ const Index = () => {
 
   const stockDetails = selectedStock ? getStockDetails(selectedStock) : null;
 
+  const getStockTitle = (symbol: string, details: any) => {
+    const changeText = details.change >= 0 ? "Yükselişte" : "Düşüşte";
+    return `${symbol} ${details.name} Hisse Analizi | %${Math.abs(details.change)} ${changeText} | Canlı Borsa`;
+  };
+
+  const getStockDescription = (symbol: string, details: any) => {
+    return `${symbol} (${details.name}) hisse senedi canlı fiyat: ${details.price}₺, değişim: %${details.change}, hacim: ${details.volume.toLocaleString()}. Güncel borsa verileri ve teknik analiz.`;
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <Helmet>
+        {selectedStock && stockDetails ? (
+          <>
+            <title>{getStockTitle(selectedStock, stockDetails)}</title>
+            <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
+            <meta name="keywords" content={`${selectedStock}, ${stockDetails.name}, borsa, hisse, BIST, borsa analiz, ${selectedStock} analiz`} />
+          </>
+        ) : (
+          <>
+            <title>Borsa İstanbul Hisse Senetleri | Canlı Borsa Takibi</title>
+            <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri, canlı fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri." />
+            <meta name="keywords" content="borsa istanbul, bist, hisse senetleri, borsa, thyao, garan, bist 100, canlı borsa" />
+          </>
+        )}
+      </Helmet>
+
       <Header />
       <div className="flex-1">
         <div className="max-w-6xl mx-auto px-4">

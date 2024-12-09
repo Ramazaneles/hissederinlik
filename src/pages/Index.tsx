@@ -82,28 +82,37 @@ const Index = () => {
 
   const getStockTitle = (symbol: string, details: any) => {
     const changeText = details.change >= 0 ? "Yükselişte" : "Düşüşte";
-    return `${symbol} ${details.name} Hisse Analizi | %${Math.abs(details.change)} ${changeText} | Canlı Borsa`;
+    const changeAmount = Math.abs(details.change).toFixed(2);
+    const priceFormatted = details.price.toFixed(2);
+    
+    return `${symbol} ${details.name} Hisse Analizi | ${priceFormatted}₺ | %${changeAmount} ${changeText} | BIST`;
   };
 
   const getStockDescription = (symbol: string, details: any) => {
-    return `${symbol} (${details.name}) hisse senedi canlı fiyat: ${details.price}₺, değişim: %${details.change}, hacim: ${details.volume.toLocaleString()}. Güncel borsa verileri ve teknik analiz.`;
+    const changeText = details.change >= 0 ? "yükseliş" : "düşüş";
+    const volumeFormatted = details.volume.toLocaleString();
+    return `${symbol} (${details.name}) hisse senedi anlık fiyat: ${details.price}₺, günlük ${changeText}: %${Math.abs(details.change).toFixed(2)}, işlem hacmi: ${volumeFormatted}. Canlı borsa verileri, teknik analiz ve detaylı bilgiler.`;
+  };
+
+  const getStockKeywords = (symbol: string, details: any) => {
+    return `${symbol}, ${details.name}, ${symbol} hisse, borsa istanbul, bist, ${symbol} analiz, ${symbol} teknik analiz, ${symbol} hisse analizi, borsa, hisse senedi`;
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Helmet>
         {selectedStock && stockDetails ? (
-          <div>
+          <>
             <title>{getStockTitle(selectedStock, stockDetails)}</title>
             <meta name="description" content={getStockDescription(selectedStock, stockDetails)} />
-            <meta name="keywords" content={`${selectedStock}, ${stockDetails.name}, borsa, hisse, BIST, borsa analiz, ${selectedStock} analiz`} />
-          </div>
+            <meta name="keywords" content={getStockKeywords(selectedStock, stockDetails)} />
+          </>
         ) : (
-          <div>
-            <title>Borsa İstanbul Hisse Senetleri | Canlı Borsa Takibi</title>
-            <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri, canlı fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri." />
-            <meta name="keywords" content="borsa istanbul, bist, hisse senetleri, borsa, thyao, garan, bist 100, canlı borsa" />
-          </div>
+          <>
+            <title>Borsa İstanbul (BIST) Hisse Senetleri | Canlı Borsa Takibi ve Analiz</title>
+            <meta name="description" content="Borsa İstanbul (BIST) hisse senetleri canlı takip, anlık fiyatlar, değişim oranları ve hacim bilgileri. En güncel borsa verileri ve teknik analizler." />
+            <meta name="keywords" content="borsa istanbul, bist, bist 100, hisse senetleri, borsa, canlı borsa, borsa analiz, hisse analiz, thyao, garan, bist analiz" />
+          </>
         )}
       </Helmet>
 

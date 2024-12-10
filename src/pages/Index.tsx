@@ -8,6 +8,7 @@ import { MarketSummary } from "@/components/market/MarketSummary";
 import { StockDetails } from "@/components/stock/StockDetails";
 import { StockPageSEO } from "@/components/seo/StockPageSEO";
 import { StockActions } from "@/components/stock/StockActions";
+import BlogSection from "@/components/blog/BlogSection";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -83,7 +84,12 @@ const Index = () => {
       <Header />
       <div className="flex-1">
         <div className="max-w-6xl mx-auto px-4">
-          {!selectedStock && <MarketSummary />}
+          {!selectedStock && (
+            <>
+              <MarketSummary />
+              <BlogSection />
+            </>
+          )}
 
           <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
             {selectedStock ? (

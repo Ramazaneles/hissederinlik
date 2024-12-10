@@ -1,14 +1,15 @@
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Bell, Search, User } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
     <header className="bg-card border-b border-muted/20 py-4 px-6 mb-6 sticky top-0 z-50 backdrop-blur-sm bg-opacity-90">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-6">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-success bg-clip-text text-transparent">
+          <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-success bg-clip-text text-transparent hover:opacity-90 transition-opacity">
             StockDepth
-          </h1>
+          </Link>
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>

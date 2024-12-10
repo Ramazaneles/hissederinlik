@@ -9,8 +9,6 @@ import { StockDetails } from "@/components/stock/StockDetails";
 import { StockPageSEO } from "@/components/seo/StockPageSEO";
 import { StockActions } from "@/components/stock/StockActions";
 import BlogSection from "@/components/blog/BlogSection";
-import { TrendingStocks } from "@/components/market/TrendingStocks";
-import { MarketNews } from "@/components/market/MarketNews";
 
 // Mock depth data
 const mockBuyOrders = [
@@ -88,34 +86,10 @@ const Index = () => {
         <div className="max-w-6xl mx-auto px-4">
           {!selectedStock && (
             <>
-              <div className="mb-8">
-                <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-success bg-clip-text text-transparent">
-                  Borsa İstanbul Canlı Takip
-                </h1>
-                <p className="text-muted text-lg mb-8">
-                  BIST hisse senetleri için anlık fiyatlar, derinlik analizi ve teknik veriler
-                </p>
-                <StockSearch onSelect={handleStockSelect} />
-              </div>
-              
               <MarketSummary />
-              
-              <TrendingStocks className="mb-12" onStockSelect={handleStockSelect} />
-              
-              <div className="grid md:grid-cols-2 gap-8 mb-12">
-                <div className="card">
-                  <h2 className="text-2xl font-bold mb-4">En Çok İşlem Görenler</h2>
-                  <StockGrid onStockSelect={handleStockSelect} />
-                </div>
-                
-                <div className="card">
-                  <h2 className="text-2xl font-bold mb-4">Günün Kazandıranları</h2>
-                  <StockGrid onStockSelect={handleStockSelect} filter="gainers" />
-                </div>
+              <div className="mb-12">
+                <StockGrid onStockSelect={handleStockSelect} />
               </div>
-              
-              <MarketNews className="mb-12" />
-              
               <BlogSection />
             </>
           )}

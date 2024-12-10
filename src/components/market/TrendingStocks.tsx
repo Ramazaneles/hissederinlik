@@ -1,4 +1,4 @@
-import { ArrowTrendingUpIcon } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TrendingStocksProps {
@@ -17,7 +17,7 @@ export const TrendingStocks = ({ className, onStockSelect }: TrendingStocksProps
   return (
     <div className={cn("card", className)}>
       <div className="flex items-center gap-2 mb-4">
-        <ArrowTrendingUpIcon className="w-6 h-6 text-primary" />
+        <TrendingUp className="w-6 h-6 text-primary" />
         <h2 className="text-2xl font-bold">Trend Hisseler</h2>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

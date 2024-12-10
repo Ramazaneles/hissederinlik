@@ -24,12 +24,13 @@ type SortField = "price" | "change" | "volume" | "marketCap";
 
 interface StockGridProps {
   onStockSelect: (symbol: string) => void;
+  filter?: string;
 }
 
-export const StockGrid = ({ onStockSelect }: StockGridProps) => {
+export const StockGrid = ({ onStockSelect, filter }: StockGridProps) => {
   const [sortField, setSortField] = useState<SortField>("price");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [filter, setFilter] = useState<string>("");
+  const [localFilter, setLocalFilter] = useState<string>(filter || "");
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -42,9 +43,9 @@ export const StockGrid = ({ onStockSelect }: StockGridProps) => {
 
   const sortedStocks = [...mockStocks]
     .filter(stock => 
-      stock.symbol.toLowerCase().includes(filter.toLowerCase()) ||
-      stock.name.toLowerCase().includes(filter.toLowerCase()) ||
-      stock.sector.toLowerCase().includes(filter.toLowerCase())
+      stock.symbol.toLowerCase().includes(localFilter.toLowerCase()) ||
+      stock.name.toLowerCase().includes(localFilter.toLowerCase()) ||
+      stock.sector.toLowerCase().includes(localFilter.toLowerCase())
     )
     .sort((a, b) => {
       const multiplier = sortDirection === "asc" ? 1 : -1;
@@ -65,8 +66,8 @@ export const StockGrid = ({ onStockSelect }: StockGridProps) => {
             type="text"
             placeholder="Hisse, Sektör veya Şirket Ara..."
             className="flex-1 input"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            value={localFilter}
+            onChange={(e) => setLocalFilter(e.target.value)}
           />
         </div>
         <div className="flex flex-wrap gap-2">

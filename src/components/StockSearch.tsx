@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 
 interface StockSearchProps {
   defaultValue?: string;
+  onSelect?: (symbol: string) => void;
 }
 
-export const StockSearch = ({ defaultValue = 'VRGYO' }: StockSearchProps) => {
+export const StockSearch = ({ defaultValue = 'VRGYO', onSelect }: StockSearchProps) => {
   const [searchTerm, setSearchTerm] = useState(defaultValue);
 
   useEffect(() => {
@@ -13,7 +14,11 @@ export const StockSearch = ({ defaultValue = 'VRGYO' }: StockSearchProps) => {
   }, [defaultValue]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value.toUpperCase());
+    const value = e.target.value.toUpperCase();
+    setSearchTerm(value);
+    if (onSelect) {
+      onSelect(value);
+    }
   };
 
   return (

@@ -4,7 +4,7 @@ import { CalendarDays } from "lucide-react";
 
 const BlogSection = () => {
   return (
-    <section className="py-12">
+    <section className="py-12 border-t border-muted/20">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold mb-8 bg-gradient-to-r from-primary to-success bg-clip-text text-transparent">
           Borsa Analiz Blog

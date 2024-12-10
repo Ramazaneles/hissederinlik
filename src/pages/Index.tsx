@@ -87,39 +87,20 @@ const Index = () => {
           {!selectedStock && (
             <>
               <MarketSummary />
+              <div className="mb-12">
+                <StockGrid onStockSelect={handleStockSelect} />
+              </div>
               <BlogSection />
             </>
           )}
 
-          <div className="flex items-center justify-between mb-6 bg-card rounded-lg p-4">
-            {selectedStock ? (
-              <button 
-                className="text-muted hover:text-foreground transition-colors"
-                onClick={handleBackClick}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
-                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-              </button>
-            ) : (
-              <div className="w-6" />
-            )}
-            <div className="flex-1 mx-4">
-              <StockSearch defaultValue={selectedStock || ""} />
-            </div>
-            {selectedStock && <StockActions />}
-          </div>
-
-          {selectedStock && stockDetails ? (
+          {selectedStock && stockDetails && (
             <StockDetails 
               symbol={selectedStock}
               details={stockDetails}
               buyOrders={mockBuyOrders}
               sellOrders={mockSellOrders}
             />
-          ) : (
-            <StockGrid onStockSelect={handleStockSelect} />
           )}
         </div>
       </div>

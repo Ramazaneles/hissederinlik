@@ -4,34 +4,66 @@ import { ScrollArea } from "./ui/scroll-area";
 import { ArrowUpDown, TrendingUp, TrendingDown, Volume2 } from 'lucide-react';
 import { Button } from "./ui/button";
 import { Helmet } from "react-helmet";
+import { useQuery } from "@tanstack/react-query";
 
-// Genişletilmiş mock veri
-const mockStocks = [
-  { symbol: "THYAO", name: "Türk Hava Yolları", price: 158.90, change: 3.78, volume: 1245678, marketCap: "158.9B", sector: "Ulaştırma" },
-  { symbol: "GARAN", name: "Garanti Bankası", price: 42.16, change: -1.23, volume: 987654, marketCap: "42.1B", sector: "Bankacılık" },
-  { symbol: "ASELS", name: "Aselsan", price: 45.82, change: 0.92, volume: 456789, marketCap: "45.8B", sector: "Savunma" },
-  { symbol: "KCHOL", name: "Koç Holding", price: 210.50, change: -0.45, volume: 234567, marketCap: "210.5B", sector: "Holding" },
-  { symbol: "EREGL", name: "Ereğli Demir Çelik", price: 38.64, change: 1.56, volume: 789012, marketCap: "38.6B", sector: "Demir-Çelik" },
-  { symbol: "BIMAS", name: "BİM Mağazalar", price: 145.30, change: -2.10, volume: 345678, marketCap: "145.3B", sector: "Perakende" },
-  { symbol: "AKBNK", name: "Akbank", price: 33.92, change: 1.87, volume: 567890, marketCap: "33.9B", sector: "Bankacılık" },
-  { symbol: "SISE", name: "Şişe Cam", price: 42.78, change: 0.68, volume: 123456, marketCap: "42.7B", sector: "Cam" },
-  { symbol: "TUPRS", name: "Tüpraş", price: 187.45, change: 4.23, volume: 890123, marketCap: "187.4B", sector: "Enerji" },
-  { symbol: "SAHOL", name: "Sabancı Holding", price: 54.60, change: 2.15, volume: 432109, marketCap: "54.6B", sector: "Holding" },
-  // ... 40 hisse daha eklenecek
+// Turkish stock symbols array
+const stockSymbols = [
+  "THYAO.IS", "GARAN.IS", "ASELS.IS", "KCHOL.IS", "EREGL.IS", 
+  "BIMAS.IS", "AKBNK.IS", "SISE.IS", "TUPRS.IS", "SAHOL.IS",
+  "SASA.IS", "YKBNK.IS", "PGSUS.IS", "TAVHL.IS", "TOASO.IS"
 ];
 
-type SortField = "price" | "change" | "volume" | "marketCap";
+interface StockData {
+  symbol: string;
+  name: string;
+  price: number;
+  change: number;
+  volume: number;
+  marketCap: string;
+  sector: string;
+}
 
 interface StockGridProps {
   onStockSelect: (symbol: string) => void;
 }
 
+const fetchStockData = async (symbol: string): Promise<StockData> => {
+  try {
+    const response = await fetch(`https://api.stockhisse.com/stocks/overview/?symbol=${symbol}&format=json`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    
+    return {
+      symbol: symbol.replace('.IS', ''),
+      name: data.name || 'Unknown',
+      price: parseFloat(data.price) || 0,
+      change: parseFloat(data.change) || 0,
+      volume: parseInt(data.volume) || 0,
+      marketCap: data.marketCap || '0',
+      sector: data.sector || 'Unknown'
+    };
+  } catch (error) {
+    console.error(`Error fetching data for ${symbol}:`, error);
+    throw error;
+  }
+};
+
 export const StockGrid = ({ onStockSelect }: StockGridProps) => {
-  const [sortField, setSortField] = useState<SortField>("price");
+  const [sortField, setSortField] = useState<"price" | "change" | "volume">("price");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [filter, setFilter] = useState<string>("");
 
-  const handleSort = (field: SortField) => {
+  const { data: stocks = [], isLoading, error } = useQuery({
+    queryKey: ['stocks'],
+    queryFn: async () => {
+      const promises = stockSymbols.map(symbol => fetchStockData(symbol));
+      return Promise.all(promises);
+    },
+  });
+
+  const handleSort = (field: "price" | "change" | "volume") => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -40,7 +72,7 @@ export const StockGrid = ({ onStockSelect }: StockGridProps) => {
     }
   };
 
-  const sortedStocks = [...mockStocks]
+  const sortedStocks = [...stocks]
     .filter(stock => 
       stock.symbol.toLowerCase().includes(filter.toLowerCase()) ||
       stock.name.toLowerCase().includes(filter.toLowerCase()) ||
@@ -50,6 +82,14 @@ export const StockGrid = ({ onStockSelect }: StockGridProps) => {
       const multiplier = sortDirection === "asc" ? 1 : -1;
       return (Number(a[sortField]) - Number(b[sortField])) * multiplier;
     });
+
+  if (isLoading) {
+    return <div className="p-4 text-center">Yükleniyor...</div>;
+  }
+
+  if (error) {
+    return <div className="p-4 text-center text-red-500">Veri yüklenirken bir hata oluştu.</div>;
+  }
 
   return (
     <>
